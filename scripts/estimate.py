@@ -22,24 +22,35 @@ rowFeatureVectors = torch.tensor(rowFeatureVectors['Xrow'].astype(float))
 M = torch.rand(6,6)
 
 # Setting the number of epochs 
-num_epochs =  100
+num_epochs =  10000
 M.requires_grad = True
 
 
 # Setting the ground truth variable as the confusion matrix 
 groundTruth = confusionMatrix
 
-# Settin the optimizer to be used to optimize the parameters of the distance matrix
-optimizer = optim.Adam([M], lr = 0.1, betas = (0.9,0.999), weight_decay = 0.00005)
+# Setting different optimizer to be used to optimize the parameters of the distance matrix
+optimizer_adam = optim.Adam([M], lr = 0.0001, betas = (0.9,0.999), weight_decay = 0.00005)
+optimizer_sgd = optim.SGD([M], lr = 0.0001)
 
+# Defining variables to store the logging values of during optimizing 
+best_loss = 100000
+best_epoch = 0
 
 for ep in range(num_epochs):
     output = torch.mm(torch.mm(rowFeatureVectors.T,M.double()),rowFeatureVectors)
     loss = MSELoss(output,groundTruth)
+    loss.backward()
+    optimizer_sgd.step()
+    if(loss.item()<best_loss):
+        best_loss = loss.item()
+        best_estimate = output
+        best_epoch  = ep
+    print("The loss for ",ep, "iteration is: ",loss.item())
+
+print("The best loss is at ", best_epoch, "iteration and the best loss is: ", best_loss)
     
-    print(loss)
-    
-    
+#print("The matrix which indicates the difference between the confusion matrix and estimated confusion matrix is:", (best_estimate - confusionMatrix).detach().numpy())
     
     
 
