@@ -1,22 +1,10 @@
 # Standard imports
 import torch 
+import torch.optim as optim
 import numpy as np
 import scipy.io   
+from helper_functions import * 
 
-
-# Z scoring the matrix 
-def normalize(matrix):
-        mean = torch.mean(matrix.flatten())
-        sigma = torch.std(matrix.flatten())
-        matrix = (matrix - mean)/sigma
-        return matrix 
-
-# Making a non-symmetrix square matrix symmetric 
-def makeSymmetric(matrix):
-    return 0.5*(matrix + matrix.T)
-
-
-    
 
 # Loading the confusion matrix
 
@@ -37,10 +25,21 @@ M = torch.rand(6,6)
 num_epochs =  100
 M.requires_grad = True
 
-res = torch.mm(torch.mm(rowFeatureVectors.T,M.double()),rowFeatureVectors)
+
+# Setting the ground truth variable as the confusion matrix 
+groundTruth = confusionMatrix
+
+# Settin the optimizer to be used to optimize the parameters of the distance matrix
+optimizer = optim.Adam([M], lr = 0.1, betas = (0.9,0.999), weight_decay = 0.00005)
 
 
 for ep in range(num_epochs):
+    output = torch.mm(torch.mm(rowFeatureVectors.T,M.double()),rowFeatureVectors)
+    loss = MSELoss(output,groundTruth)
+    
+    print(loss)
+    
+    
     
     
 
