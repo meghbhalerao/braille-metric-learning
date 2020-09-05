@@ -9,9 +9,15 @@ from helper_functions import *
 # Loading the confusion matrix
 
 confusionMatrix = scipy.io.loadmat("../data/brailletouch.mat")
+
+# The confusion matrix is converted to a tensor here for further calculations
+
 confusionMatrix = torch.tensor(confusionMatrix["A"].astype(float))
 confusionMatrix = normalize(confusionMatrix)
-confusionMatrix  = makeSymmetric(confusionMatrix)
+
+distanceMatrix = 1 - confusionMatrix
+distanceMatrix = z_scoring(distanceMatrix)
+distanceMatrix  = makeSymmetric(distanceMatrix)
 
 # Loading the feature vector matrix according to either of the peano curves 
 
@@ -27,7 +33,7 @@ M.requires_grad = True
 
 
 # Setting the ground truth variable as the confusion matrix 
-groundTruth = confusionMatrix
+groundTruth = distanceMatrix
 
 # Setting different optimizer to be used to optimize the parameters of the distance matrix
 optimizer_adam = optim.Adam([M], lr = 0.0001, betas = (0.9,0.999), weight_decay = 0.00005)
@@ -50,9 +56,10 @@ for ep in range(num_epochs):
 
 print("The best loss is at ", best_epoch, "iteration and the best loss is: ", best_loss)
     
-#print("The matrix which indicates the difference between the confusion matrix and estimated confusion matrix is:", (best_estimate - confusionMatrix).detach().numpy())
+print("The matrix which indicates the difference between the distance matrix and estimated distance matrix is:", (best_estimate - distanceMatrix).detach().numpy())
     
     
 
 
  
+test canges
