@@ -1,5 +1,5 @@
 # Distance Metric Learning 
-This repository contains the python and MATLAB scripts for Distance Metric Learning for different datasets namely\
+This repository contains the python and MATLAB scripts for Distance Metric Learning for different datasets namely
 1. The **Braille Character** Dataset.
 2. The **HAR-72** Haptic Acceleration Response Dataset.
 ## Brief Description
