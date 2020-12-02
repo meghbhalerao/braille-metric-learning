@@ -10,4 +10,4 @@ This is the code for the work done on Distance Metric Learning for Data Clusteri
 3. 
 ## References
 1. [Distance metric learning, with application to clustering with side-information](https://ai.stanford.edu/~ang/papers/nips02-metric.pdf). _Eric P. Xing, Andrew Y. Ng, Michael I. Jordan and Stuart Russell. NIPS 2002._ 
-2. 
+2. [Tactile recognition of raised characters: A parametric study](https://link.springer.com/article/10.3758/BF03329767). _Jack M Loomis. Bulletin of the Psychonomic Society 1985, 23(1), 18-20._ 
